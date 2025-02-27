@@ -20,7 +20,7 @@ COPY Caddyfile /etc/caddy/Caddyfile
 COPY .env.local /etc/caddy/.env.local
 
 # Load environment variables from the .env.local file
-RUN echo "source /etc/caddy/.env.local" >> /root/.bashrc
+RUN echo "source /etc/caddy/.env.local" >> /root/.bashr1
 
 # Set the environment variable for the Ollama host
 ENV OLLAMA_HOST=0.0.0.0
@@ -28,7 +28,7 @@ ENV OLLAMA_HOST=0.0.0.0
 
 
 # Expose the port that Caddy will listen on
-EXPOSE 80
+EXPOSE 8081
 
 # Copy a script to start both Ollama and Caddy
 COPY start.sh /start.sh
