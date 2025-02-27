@@ -15,12 +15,12 @@ RUN LATEST_CADDY_URL=$(wget -qO- "https://api.github.com/repos/caddyserver/caddy
     && chown root:root /usr/bin/caddy \
     && chmod 755 /usr/bin/caddy
 
-# Copy the Caddyfile and .env.local to the container
+# Copy the Caddyfile and .env to the container
 COPY Caddyfile /etc/caddy/Caddyfile
-COPY .env.local /etc/caddy/.env.local
+# COPY .env /etc/caddy/.env
 
-# Load environment variables from the .env.local file
-RUN echo "source /etc/caddy/.env.local" >> /root/.bashr1
+# # Load environment variables from the .env file
+# RUN echo "source /etc/caddy/.env" >> /root/.bashrc
 
 # Set the environment variable for the Ollama host
 ENV OLLAMA_HOST=0.0.0.0
