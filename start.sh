@@ -12,6 +12,18 @@ fi
 # Start ollama in the background
 ollama serve &
 OLLAMA_PID=$!
+
+# Wait for Ollama server to be ready
+echo "Waiting for Ollama server to start..."
+while ! curl -s http://localhost:11434/api/tags >/dev/null; do
+    sleep 1
+done
+echo "Ollama server is ready"
+
+# Pull the model
+echo "Pulling llama3.2-vision:11b model..."
+curl -X POST http://localhost:11434/api/pull -d '{"name":"llama3.2-vision:11b"}'
+
 # Start caddy in the background
 caddy run --config /etc/caddy/Caddyfile &
 CADDY_PID=$!
@@ -49,6 +61,4 @@ while true; do
     fi
     sleep 1
 done
-#Pull default llama model
-ollama pull llama3.2-vision:11b
 

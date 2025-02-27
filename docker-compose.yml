@@ -1,2 +1,17 @@
-name: ollama-caddy-auth
-
+services:
+  ollama-caddy:
+    build:
+      context: .
+    image: mdas/ollama-caddy
+    container_name: ollama-caddy
+    ports:
+      - "8081:8081"
+    environment:
+      - OLLAMA_API_KEY=${OLLAMA_API_KEY:-passcode}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
