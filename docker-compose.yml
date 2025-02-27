@@ -1,0 +1,11 @@
+name: ollama-caddy-auth
+services:
+  ollama:
+    image: ollama/ollama
+    restart: always
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - 11434:11434
