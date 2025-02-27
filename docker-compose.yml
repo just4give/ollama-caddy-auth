@@ -8,6 +8,7 @@ services:
       - "8081:8081"
     environment:
       - OLLAMA_API_KEY=${OLLAMA_API_KEY:-passcode}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2-vision:11b}
     deploy:
       resources:
         reservations:

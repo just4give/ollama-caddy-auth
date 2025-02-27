@@ -1,12 +1,18 @@
 #!/bin/bash
 
-# Print the environment variable for debugging
+# Print the environment variables for debugging
 echo "OLLAMA_API_KEY: '$OLLAMA_API_KEY'"
+echo "OLLAMA_MODEL: '$OLLAMA_MODEL'"
 
 # Ensure required environment variables are set
 if [ -z "$OLLAMA_API_KEY" ]; then
     echo "OLLAMA_API_KEY is not set. Exiting."
     exit 1
+fi
+
+if [ -z "$OLLAMA_MODEL" ]; then
+    echo "OLLAMA_MODEL is not set, using default: llama3.2-vision:11b"
+    export OLLAMA_MODEL="llama3.2-vision:11b"
 fi
 
 # Start ollama in the background
@@ -21,8 +27,8 @@ done
 echo "Ollama server is ready"
 
 # Pull the model
-echo "Pulling llama3.2-vision:11b model..."
-curl -X POST http://localhost:11434/api/pull -d '{"name":"llama3.2-vision:11b"}'
+echo "Pulling $OLLAMA_MODEL model..."
+curl -X POST http://localhost:11434/api/pull -d "{\"name\":\"$OLLAMA_MODEL\"}"
 
 # Start caddy in the background
 caddy run --config /etc/caddy/Caddyfile &
