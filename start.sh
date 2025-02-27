@@ -49,3 +49,6 @@ while true; do
     fi
     sleep 1
 done
+#Pull default llama model
+ollama pull llama3.2-vision:11b
+
