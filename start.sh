@@ -3,8 +3,18 @@
 # Print the environment variable for debugging
 echo "OLLAMA_API_KEY: '$OLLAMA_API_KEY'"
 
+# Ensure required environment variables are set
+if [ -z "$OLLAMA_API_KEY" ]; then
+    echo "OLLAMA_API_KEY is not set. Exiting."
+    exit 1
+fi
+
+# Start ollama in the background
 ollama serve &
 OLLAMA_PID=$!
+# Start caddy in the background
+caddy run --config /etc/caddy/Caddyfile &
+CADDY_PID=$!
 
 # Function to check process status
 check_process() {
@@ -17,7 +27,7 @@ check_process() {
 }
 
 # Handle shutdown signals
-trap "kill $OLLAMA_PID; exit 0" SIGTERM SIGINT
+trap "kill $OLLAMA_PID $CADDY_PID; exit 0" SIGTERM SIGINT
 
 # Wait for both services to start and monitor them
 while true; do
@@ -29,6 +39,13 @@ while true; do
         ollama serve &
         OLLAMA_PID=$!
     fi
-    
+    if ! ps -p $CADDY_PID > /dev/null; then
+        echo "Caddy service is not running, checking for exit status"
+        check_process $CADDY_PID "Caddy"
+        # Only restart if check_process hasn't exited the script
+        echo "Starting Caddy now"
+        caddy run --config /etc/caddy/Caddyfile &
+        CADDY_PID=$!
+    fi
     sleep 1
 done
