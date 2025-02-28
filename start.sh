@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Function to log errors
+log_error() {
+    echo "ERROR: $1" >&2
+}
+
 # Print the environment variables for debugging
 echo "OLLAMA_API_KEY: '$OLLAMA_API_KEY'"
 echo "OLLAMA_MODEL: '$OLLAMA_MODEL'"
@@ -14,6 +19,18 @@ if [ -z "$OLLAMA_MODEL" ]; then
     echo "OLLAMA_MODEL is not set, using default: llama3.2-vision:11b"
     export OLLAMA_MODEL="llama3.2-vision:11b"
 fi
+
+# Wait for GPU to become available
+echo "Waiting for GPU to become available..."
+while ! nvidia-smi &> /dev/null; do
+  echo "GPU not detected. Waiting..."
+  sleep 5
+done
+echo "GPU detected successfully."
+
+# Listing GPU
+echo "Listing GPU..."
+nvidia-smi -L
 
 # Start ollama in the background
 ollama serve &

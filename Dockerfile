@@ -1,7 +1,21 @@
 FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04
 
+# Set NVIDIA runtime environment variables
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
+
+# Set CUDA environment variables
+ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
+ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
+
+
 # Install dependencies
-RUN apt-get update && apt-get install -y wget jq curl debian-keyring debian-archive-keyring apt-transport-https
+RUN apt-get update && apt-get install -y wget jq curl debian-keyring debian-archive-keyring apt-transport-https nvidia-container-toolkit
+
+
+# Verify GPU availability
+RUN nvidia-smi
+
 
 # Install Ollama using the provided script
 RUN curl -fsSL https://ollama.com/install.sh | sh
