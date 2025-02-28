@@ -43,9 +43,7 @@ while ! curl -s http://localhost:11434/api/tags >/dev/null; do
 done
 echo "Ollama server is ready"
 
-# Pull the model
-echo "Pulling $OLLAMA_MODEL model..."
-curl -X POST http://localhost:11434/api/pull -d "{\"name\":\"$OLLAMA_MODEL\"}"
+
 
 # Start caddy in the background
 caddy run --config /etc/caddy/Caddyfile &
@@ -85,3 +83,6 @@ while true; do
     sleep 1
 done
 
+# Pull the model
+# echo "Pulling $OLLAMA_MODEL model..."
+# curl -X POST http://localhost:11434/api/pull -d "{\"name\":\"$OLLAMA_MODEL\"}"
