@@ -13,8 +13,6 @@ ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
 RUN apt-get update && apt-get install -y wget jq curl debian-keyring debian-archive-keyring apt-transport-https nvidia-container-toolkit
 
 
-# Verify GPU availability
-RUN nvidia-smi
 
 
 # Install Ollama using the provided script
