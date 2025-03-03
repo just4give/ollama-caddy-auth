@@ -83,6 +83,6 @@ while true; do
     sleep 1
 done
 
-# Pull the model
-# echo "Pulling $OLLAMA_MODEL model..."
-# curl -X POST http://localhost:11434/api/pull -d "{\"name\":\"$OLLAMA_MODEL\"}"
+Pull the model
+echo "Pulling $OLLAMA_MODEL model..."
+curl -X POST http://localhost:11434/api/pull -d "{\"name\":\"$OLLAMA_MODEL\"}"
